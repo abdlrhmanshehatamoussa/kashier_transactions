@@ -1,6 +1,6 @@
 const express = require('express');
-const pingRouter = require('./ping/ping.router');
-const transactionsRouter = require('./transactions/transactions.router')
+const pingRouter = require('./endpoints/ping/ping.router');
+const transactionsRouter = require('./endpoints/transactions/transactions.router')
 
 const finalRouter = express.Router();
 const routers = [

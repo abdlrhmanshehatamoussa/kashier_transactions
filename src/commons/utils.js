@@ -10,7 +10,12 @@ const catchAsync = (fn) => (req, res, next) => {
     Promise.resolve(fn(req, res, next)).catch((err) => next(err));
 };
 
+const isNullOrEmpty = (text) => {
+    return text === null || text === undefined || text.length == 0
+}
+
 module.exports = {
     assertHasProperty,
-    catchAsync
+    catchAsync,
+    isNullOrEmpty
 }

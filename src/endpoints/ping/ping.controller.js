@@ -1,4 +1,4 @@
-const utils = require('../commons/utils');
+const utils = require('../../commons/utils');
 
 const ping = utils.catchAsync(async(req, res) => {
     res.status(200).json({

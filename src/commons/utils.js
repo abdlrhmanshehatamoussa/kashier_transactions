@@ -14,8 +14,16 @@ const isNullOrEmpty = (text) => {
     return text === null || text === undefined || text.length == 0
 }
 
+const today = () => {
+    let dt = new Date()
+    const offset = dt.getTimezoneOffset()
+    dt = new Date(dt.getTime() - (offset * 60 * 1000))
+    return dt.toISOString().split('T')[0]
+}
+
 module.exports = {
     assertHasProperty,
     catchAsync,
+    today,
     isNullOrEmpty
 }

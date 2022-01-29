@@ -1,0 +1,227 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "1.0.1",
+        "title": "Kashier Transactions Service",
+        "contact": {
+            "email": "abdlrhmanshehata@gmail.com"
+        }
+    },
+    "tags": [
+        "ping",
+        "transactions"
+    ],
+    "schemas": {
+        "transaction": {
+            "properties": {
+                "amount": {
+                    "type": "number"
+                },
+                "currency": {
+                    "type": "string"
+                },
+                "operation": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "reportItem": {
+            "type": "object",
+            "properties": {
+                "deposit": {
+                    "type": "number"
+                },
+                "withdrawal": {
+                    "type": "number"
+                },
+                "net": {
+                    "type": "number"
+                }
+            }
+        },
+        "report": {
+            "properties": {
+                "date": {
+                    "type": "string"
+                },
+                "report": {
+                    "type": "object",
+                    "properties": {
+                        "usd": {
+                            "$ref": "#schemas/reportItem"
+                        },
+                        "eur": {
+                            "$ref": "#schemas/reportItem"
+                        },
+                        "egp": {
+                            "$ref": "#schemas/reportItem"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "paths": {
+        "/": {
+            "get": {
+                "tags": [
+                    "ping"
+                ],
+                "summary": "Pings the service",
+                "description": "Retrieve basic information about the running service",
+                "produces": [
+                    "application/json"
+                ]
+            }
+        },
+        "/transactions/{merchantid}": {
+            "get": {
+                "tags": [
+                    "transactions"
+                ],
+                "summary": "Get transactions for given user",
+                "description": "Retrieves a transactions report for a given user for today grouped by currencies",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [{
+                        "name": "merchantid",
+                        "in": "path",
+                        "description": "Merchant Identifier",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "client-token",
+                        "in": "header",
+                        "description": "Client Token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "$ref": "#schemas/report"
+                        }
+                    },
+                    "403": {
+                        "description": "Unauthorized"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "transactions"
+                ],
+                "summary": "Add single transaction",
+                "description": "Adds a transaction for the given merchant whether deposit or withdrawal",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [{
+                        "name": "merchantid",
+                        "in": "path",
+                        "description": "Merchant Identifier",
+                        "required": true,
+                        "type": "string",
+                        "items": {
+                            "type": "string",
+                            "default": "available"
+                        },
+                        "collectionFormat": "multi"
+                    },
+                    {
+                        "name": "client-token",
+                        "in": "header",
+                        "description": "Client Token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "transaction",
+                        "in": "body",
+                        "description": "Merchant Identifier",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#schemas/transaction"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created successfully"
+                    },
+                    "422": {
+                        "description": "Invalid transaction"
+                    },
+                    "403": {
+                        "description": "Unauthorized"
+                    }
+                }
+            },
+            "patch": {
+                "tags": [
+                    "transactions"
+                ],
+                "summary": "Adds bulk transaction",
+                "description": "Adds a bulk of transaction for the given merchant",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [{
+                        "name": "merchantid",
+                        "in": "path",
+                        "description": "Merchant Identifier",
+                        "required": true,
+                        "type": "string",
+                        "items": {
+                            "type": "string",
+                            "default": "available"
+                        },
+                        "collectionFormat": "multi"
+                    },
+                    {
+                        "name": "client-token",
+                        "in": "header",
+                        "description": "Client Token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "transactions",
+                        "in": "body",
+                        "description": "Merchant Identifier",
+                        "required": true,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#schemas/transaction"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created successfully"
+                    },
+                    "422": {
+                        "description": "Invalid transaction"
+                    },
+                    "403": {
+                        "description": "Unauthorized"
+                    }
+                }
+            }
+        }
+    }
+}

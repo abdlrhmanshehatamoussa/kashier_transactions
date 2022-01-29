@@ -1,11 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const transactionsController = require("./transactions.controller")
+const { getTransactions, addSingleTransaction, addBulkTransactions } = require("./transactions.controller")
+const { extractMerchantId, validateTransaction, validateTransactionsBulk } = require('./transactions.middleware')
 
 router.route('/:merchantid')
-    .get(transactionsController.getTransactions)
-    .post(transactionsController.addSingleTransaction)
-    .patch(transactionsController.addBulkTransactions)
+    .get(extractMerchantId, getTransactions)
+    .post(validateTransaction, extractMerchantId, addSingleTransaction)
+    .patch(validateTransactionsBulk, extractMerchantId, addBulkTransactions)
 
 module.exports = {
     router: router,

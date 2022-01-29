@@ -14,6 +14,11 @@ const isNullOrEmpty = (text) => {
     return text === null || text === undefined || text.length == 0
 }
 
+
+const isNull = (text) => {
+    return text === null || text === undefined
+}
+
 const today = () => {
     let dt = new Date()
     const offset = dt.getTimezoneOffset()
@@ -25,5 +30,6 @@ module.exports = {
     assertHasProperty,
     catchAsync,
     today,
-    isNullOrEmpty
+    isNullOrEmpty,
+    isNull
 }
